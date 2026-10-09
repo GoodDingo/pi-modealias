@@ -27,6 +27,6 @@ Aliases are ordinary models: `ctx.modelRegistry.find("modealias", id)` and `mode
 
 1. Update `CHANGELOG.md`, bump `version`.
 2. `npm run typecheck && npm test && npm pack --dry-run` (check the file list).
-3. `git tag vX.Y.Z && git push --tags && npm publish`.
+3. `git tag vX.Y.Z && git push --tags`, then `gh release create`.
 
 Known limits: the token estimate is coarse; the argv check only parses `--model X` (not `--model=X`) and `--thinking X`.
