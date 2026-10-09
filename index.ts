@@ -31,16 +31,27 @@ import { join } from "node:path";
 import { getSupportedThinkingLevels } from "@earendil-works/pi-ai/compat";
 import { getAgentDir, type ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
-type Alias = { id: string; name?: string; target: string; [field: string]: any };
+export type Alias = { id: string; name?: string; target: string; [field: string]: any };
+
+export function validateAliases(raw: any, path: string): Alias[] {
+  const aliases = raw?.aliases;
+  if (!Array.isArray(aliases)) throw new Error(`${path}: "aliases" must be an array`);
+  const seen = new Set<string>();
+  for (const a of aliases) {
+    if (!a.id || !a.target?.includes("/")) throw new Error(`${path}: alias needs id and provider/model target`);
+    if (seen.has(a.id)) throw new Error(`${path}: duplicate alias id "${a.id}"`);
+    seen.add(a.id);
+    if (a.target.startsWith("modealias/")) throw new Error(`${path}: alias ${a.id} must not target another alias`);
+    for (const field of ["contextWindow", "maxTokens"]) {
+      if (!(a[field] > 0)) throw new Error(`${path}: alias ${a.id} needs a positive "${field}"`);
+    }
+  }
+  return aliases;
+}
 
 function loadAliases(): Alias[] {
   const path = join(getAgentDir(), "modealias.json");
-  const { aliases } = JSON.parse(readFileSync(path, "utf8"));
-  if (!Array.isArray(aliases)) throw new Error(`${path}: "aliases" must be an array`);
-  for (const a of aliases) {
-    if (!a.id || !a.target?.includes("/")) throw new Error(`${path}: alias needs id and provider/model target`);
-  }
-  return aliases;
+  return validateAliases(JSON.parse(readFileSync(path, "utf8")), path);
 }
 
 // Levels pi will pass through for this alias (same rule pi uses for its picker).
@@ -49,8 +60,7 @@ function supportedLevels(alias: Alias): string[] {
 }
 
 // Fail when the command line explicitly asks an alias for an unsupported level.
-function assertRequestedLevelSupported(byId: Map<string, Alias>) {
-  const argv = process.argv;
+export function assertRequestedLevelSupported(byId: Map<string, Alias>, argv: string[] = process.argv) {
   const flag = (name: string) => argv[argv.indexOf(name) + 1];
   const model: string | undefined = argv.includes("--model") ? flag("--model") : undefined;
   if (!model) return;

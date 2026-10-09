@@ -1,0 +1,28 @@
+{
+  "name": "pi-modealias",
+  "version": "0.1.0",
+  "description": "pi extension: define model aliases with their own context limit, cost and thinking levels, backed by any other model",
+  "type": "module",
+  "keywords": ["pi-package", "pi-extension", "model", "alias", "provider"],
+  "license": "MIT",
+  "author": "Mira Hedl",
+  "repository": { "type": "git", "url": "git+https://github.com/GoodDingo/pi-modealias.git" },
+  "homepage": "https://github.com/GoodDingo/pi-modealias#readme",
+  "bugs": "https://github.com/GoodDingo/pi-modealias/issues",
+  "files": ["index.ts", "modealias.example.json", "README.md", "LICENSE", "CHANGELOG.md"],
+  "pi": { "extensions": ["./index.ts"] },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --test"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-ai": "*",
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-ai": "^1.1.0",
+    "@earendil-works/pi-coding-agent": "^1.1.0",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
