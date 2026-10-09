@@ -1,6 +1,6 @@
 {
   "name": "pi-modealias",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "pi extension: define model aliases with their own context limit, cost and thinking levels, backed by any other model",
   "type": "module",
   "keywords": ["pi-package", "pi-extension", "model", "alias", "provider"],
