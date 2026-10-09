@@ -8,7 +8,7 @@ For routing between models per request, use pi's built-in [virtual models](https
 ## Install
 
 ```bash
-pi install npm:pi-modealias          # or: git:github.com/GoodDingo/pi-modealias
+pi install git:github.com/GoodDingo/pi-modealias@v0.1.0
 ```
 
 Create `<agent dir>/modealias.json` (default `~/.pi/agent/modealias.json`; see [`modealias.example.json`](modealias.example.json)), then restart pi or `/reload`.
